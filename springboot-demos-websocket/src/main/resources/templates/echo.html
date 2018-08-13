@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script>
+
+        var uri = "ws://localhost:8080//echo";
+        var webSocket = new WebSocket(uri);
+
+        function sendMessage(message){
+           webSocket.send(message);
+        }
+
+        /**
+         * 打开
+         * @param ev
+         */
+        webSocket.onopen = function (ev) {
+            alert("on open : " + ev);
+        };
+
+        /**
+         * 出错
+         * @param ev
+         */
+        webSocket.onerror = function (ev) {
+            console.log("error ev", ev.data);
+            alert("on error : " + ev.data);
+        };
+
+        /**
+         * 发送消息
+         * @param ev
+         */
+        webSocket.onmessage = function (ev) {
+            console.log("message ev", ev);
+            alert("on message : " + ev.data);
+        };
+
+        /**
+         * 关闭
+         * @param ev
+         */
+        webSocket.onclose = function (ev) {
+            console.log("close ev", ev);
+            alert("on close : " + ev);
+        };
+
+
+    </script>
+
+</head>
+<body>
+
+
+    <button onclick="sendMessage('页面发送的消息')">页面发送的消息</button>
+
+
+</body>
+</html>

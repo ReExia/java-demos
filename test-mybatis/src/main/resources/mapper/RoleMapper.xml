@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mybatis.dao.RoleMapper">
+
+    <select id="getRoleById" parameterType="int" resultType="com.example.mybatis.pojo.Role">
+        select role_id as roleId,role_name as roleName,note from t_role where role_id = #{id}
+    </select>
+
+    <select id="selectRoleAsMap" parameterType="int" resultType="map">
+        select role_id as roleId,role_name as roleName,note from t_role where role_id = #{id}
+    </select>
+
+    <select id="findRolesByMap" parameterType="map" resultType="com.example.mybatis.pojo.Role">
+        select role_id as roleId, role_name as roleName,note from t_role
+        where role_name like concat('%', #{roleName}, '%')
+        and note like concat('%', #{note}, '%')
+    </select>
+
+    <select id="findRolesByAnnontation" parameterType="map" resultType="com.example.mybatis.pojo.Role">
+        select role_id as roleId, role_name as roleName,note from t_role
+        where role_name like concat('%',#{roleName}, '%')
+        and note like concat('%', #{note}, '%')
+    </select>
+
+    <select id="findRolesByBean" parameterType="com.example.mybatis.params.RoleParams" resultType="com.example.mybatis.pojo.Role">
+        select role_id as roleId, role_name as roleName,note from t_role
+        where role_name like concat('%',#{roleName}, '%')
+        and note like concat('%', #{note}, '%')
+    </select>
+
+    <select id="findByMix" resultType="com.example.mybatis.pojo.Role">
+      select role_id as roleId, role_name as roleName, note from t_role
+      where role_name like
+      concat('%', #{roleParams.roleName}, '%')
+      or note like
+      concat('%', #{roleParams.note}, '%')
+      limit #{pageParams.start}, #{pageParams.limit}
+    </select>
+
+    <resultMap id="roleMap" type="com.example.mybatis.pojo.Role">
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="note" column="note"/>
+    </resultMap>
+    <select id="getRolesByResultMap" parameterType="int" resultMap="roleMap">
+        select role_id, role_name, note from t_role where role_id = #{roleId}
+    </select>
+    
+    <insert id="insertRole" parameterType="com.example.mybatis.pojo.Role">
+      insert into t_role(role_name, note) values (#{roleName}, #{note})
+    </insert>
+
+    <insert id="insertRoleReturnKey" parameterType="com.example.mybatis.pojo.Role" useGeneratedKeys="true" keyProperty="roleId">
+      insert into t_role(role_name, note) values (#{roleName}, #{note})
+    </insert>
+
+    <insert id="insertRoleReturnCustomerKey"  parameterType="com.example.mybatis.pojo.Role">
+      <selectKey keyProperty="roleId" resultType="int" order="BEFORE">
+          select if(max(role_id) is null, 1, max(role_id) + 3) as roleId from t_role
+      </selectKey>
+      insert into t_role(role_id,role_name, note) values (#{roleId}, #{roleName}, #{note})
+    </insert>
+
+    <insert id="insertRoleUseSqlById" parameterType="com.example.mybatis.pojo.Role">
+       insert into t_role(<include refid="roleCols"/>) values (#{roleId}, #{roleName}, #{note})
+    </insert>
+    <sql id="roleCols">
+        role_id, role_name, note
+    </sql>
+
+    <update id="updateRoleById" parameterType="com.example.mybatis.pojo.Role">
+        update t_role set role_name = #{roleName}, note = #{note} where role_id = #{roleId}
+    </update>
+
+    <delete id="deleteRoleById" parameterType="int">
+        delete from t_role where role_id = #{roleId}
+    </delete>
+</mapper>

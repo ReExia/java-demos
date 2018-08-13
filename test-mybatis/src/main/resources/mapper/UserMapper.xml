@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mybatis.dao.UserMapper">
+
+    <select id="countUserByFirstName" parameterType="string" resultType="int">
+        select count(*) total from t_user where user_name like concat(#{firstName}, '%')
+    </select>
+
+    <insert id="insertUser" parameterType="com.example.mybatis.pojo.User">
+      insert into t_user(user_name, user_sex, first_name, last_name) values (#{userName}, #{userSex}, #{firstName}, #{lastName})
+    </insert>
+
+    <insert id="insertUserBatch">
+        insert into t_user(user_name, user_sex, first_name, last_name) values
+        <foreach index="index" item="user" collection="userList" separator=",">
+          (#{user.userName}, #{user.userSex}, #{user.firstName}, #{user.lastName})
+        </foreach>
+    </insert>
+
+</mapper>
