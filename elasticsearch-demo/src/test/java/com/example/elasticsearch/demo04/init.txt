@@ -1,0 +1,43 @@
+初始化
+
+1.建立索引
+PUT /tvs
+{
+	"mappings": {
+		"sales": {
+			"properties": {
+				"price": {
+					"type": "long"
+				},
+				"color": {
+					"type": "keyword"
+				},
+				"brand": {
+					"type": "keyword"
+				},
+				"sold_date": {
+					"type": "date"
+				}
+			}
+		}
+	}
+}
+
+2.创建数据
+POST /tvs/sales/_bulk
+{ "index": {}}
+{ "price" : 1000, "color" : "红色", "brand" : "长虹", "sold_date" : "2016-10-28" }
+{ "index": {}}
+{ "price" : 2000, "color" : "红色", "brand" : "长虹", "sold_date" : "2016-11-05" }
+{ "index": {}}
+{ "price" : 3000, "color" : "绿色", "brand" : "小米", "sold_date" : "2016-05-18" }
+{ "index": {}}
+{ "price" : 1500, "color" : "蓝色", "brand" : "TCL", "sold_date" : "2016-07-02" }
+{ "index": {}}
+{ "price" : 1200, "color" : "绿色", "brand" : "TCL", "sold_date" : "2016-08-19" }
+{ "index": {}}
+{ "price" : 2000, "color" : "红色", "brand" : "长虹", "sold_date" : "2016-11-05" }
+{ "index": {}}
+{ "price" : 8000, "color" : "红色", "brand" : "三星", "sold_date" : "2017-01-01" }
+{ "index": {}}
+{ "price" : 2500, "color" : "蓝色", "brand" : "小米", "sold_date" : "2017-02-12" }
